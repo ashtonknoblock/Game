@@ -1,7 +1,21 @@
+{{# if success}}
+    <p>It worked</p>
+{{ else }}
+    {{# if errors}}
+        <section class="errors">
+            <ul>
+                {{# each errors }}
+                    <li>{{ this.msg }}</li>
+                {{/each}}
+            </ul>
+        </section>
+{{/if}}
 <form action="/createuser" method="POST">
     <Legend>Create an account</Legend>
         Choose your username:<input type="text" name="username"><br>
         Choose your password:<input type="text" name="password"><br>
-        Confirm password:<input type="text" name="password-confirmed"><br>
+        <!-- Cannot use slashes in name input -->
+        Confirm password:<input type="text" name="passwordConfirmed"><br>
         <input type="submit" value="Let's play">
 </form>
+{{/if}}

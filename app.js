@@ -3,12 +3,18 @@ const mongodb = require('mongodb');
 var bodyParser = require('body-parser');
 const pug = require('pug')
 const handlebar = require('express-handlebars');
+const expressValidator = require('express-validator');
+const expressSession = require('express-session');
 
 const app = express();
 
 app.engine('handlebars', handlebar({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars');
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressValidator())
+app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}))
+
 app.use(express.static('.public/views/'));
 
 
@@ -21,12 +27,20 @@ db.once('open', function() {
 })
 
 app.get('/', (req, res) => { 
-    res.render('home');
+    res.render('home', { title: 'Form Validation', success: req.session.success, errors: req.session.errors});
 });
 
 app.post('/createuser', (req, res) => {
-    console.log('Should not be undefined:', req.body.username);
-    res.send('hello');
+    req.check('password', 'password is invalid').equals(req.body.passwordConfirmed);
+    
+    let errors = req.validationErrors();
+    if (errors) {
+        req.session.errors = errors;
+        req.session.success = false;
+    } else {
+        req.session.success = true;
+    }
+    res.redirect('/');
 })
 
 app.get('/login', (req, res) => {
