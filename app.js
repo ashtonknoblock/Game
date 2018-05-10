@@ -1,10 +1,12 @@
 const express = require('express');
 const mongodb = require('mongodb');
 const pug = require('pug')
+const handlebar = require('express-handlebars');
 
 const app = express();
 
-app.set('view engine', 'pug')
+app.engine('handlebars', handlebar({defaultLayout: 'main'}))
+app.set('view engine', 'handlebars')
 app.use(express.static('.public/views/'));
 
 
@@ -17,7 +19,7 @@ db.once('open', function() {
 })
 
 app.get('/', (req, res) => { 
-    res.render('index');
+    res.render('home');
 });
 
 
