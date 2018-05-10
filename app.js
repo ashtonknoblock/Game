@@ -1,12 +1,14 @@
 const express = require('express');
 const mongodb = require('mongodb');
+var bodyParser = require('body-parser');
 const pug = require('pug')
 const handlebar = require('express-handlebars');
 
 const app = express();
 
 app.engine('handlebars', handlebar({defaultLayout: 'main'}))
-app.set('view engine', 'handlebars')
+app.set('view engine', 'handlebars');
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('.public/views/'));
 
 
@@ -22,6 +24,14 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
+app.post('/createuser', (req, res) => {
+    console.log('Should not be undefined:', req.body.username);
+    res.send('hello');
+})
+
+app.get('/login', (req, res) => {
+    res.send('yolo');
+})
 
 
 app.listen(process.env.PORT || 5000, () => console.log( "youre connected to http://localhost:5000" ));
