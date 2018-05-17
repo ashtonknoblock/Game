@@ -30,7 +30,8 @@ db.once('open', function() {
 const newUserSchema = mongoose.Schema({
     userName: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -47,16 +48,17 @@ app.get('/', (req, res) => {
 });
 
 app.post('/createuser', (req, res) => {
-    req.check('password', 'password is invalid').equals(req.body.passwordConfirmed);
+    req.check('password', 'Password is invalid').equals(req.body.passwordConfirmed);
+    req.check('username', 'Username cannot be empty').notEmpty();
     
     let errors = req.validationErrors();
+    
     if (errors) {
         req.session.errors = errors;
         req.session.success = false;
         res.redirect('/');
     } else {
         req.session.success = true;
-        console.log(req.body.username)
         let user = new newUser({
             userName: req.body.username,
             password: req.body.password,
@@ -78,6 +80,3 @@ app.get('/factions', (req, res) => {
 })
 
 app.listen(process.env.PORT || 5000, () => console.log( "youre connected to http://localhost:5000" ));
-
-
-
