@@ -28,8 +28,14 @@ db.once('open', function() {
 
 // Schema for adding new users to the database
 const newUserSchema = mongoose.Schema({
-    userName: String,
-    password: String,
+    userName: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
     faction: String,
     rank: Number
 });
