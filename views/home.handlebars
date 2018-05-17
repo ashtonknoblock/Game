@@ -10,12 +10,12 @@
             </ul>
         </section>
 {{/if}}
-<form action="/createuser" method="POST">
-    <Legend>Create an account</Legend>
-        Choose your username:<input type="text" name="username"><br>
-        Choose your password:<input type="text" name="password"><br>
+<form action="/createuser" method="POST" onsubmit="return validateForm()">
+    <legend>Create an account</legend>
+        Choose your username:<input type="text" name="username" required><br>
+        Choose your password:<input type="text" name="password" required><br>
         <!-- Cannot use slashes in name input -->
-        Confirm password:<input type="text" name="passwordConfirmed"><br>
+        Confirm password:<input type="text" name="passwordConfirmed" required><br>
         <input type="submit" value="Let's play">
 </form>
 {{/if}}
