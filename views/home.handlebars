@@ -1,14 +1,12 @@
-{{# if success}}
-    <p>It worked</p>
-{{ else }}
-    {{# if errors}}
-        <section class="errors">
-            <ul>
-                {{# each errors }}
-                    <li>{{ this.msg }}</li>
-                {{/each}}
-            </ul>
-        </section>
+{{# if errors}}
+    <p>{{errors}}</p>
+    <section class="errors">
+        <ul>
+            {{# each errors }}
+                <li>{{ this }}</li>
+            {{/each}}
+        </ul>
+    </section>
 {{/if}}
 <form action="/createuser" method="POST">
     <Legend>Create an account</Legend>
@@ -18,4 +16,3 @@
         Confirm password:<input type="text" name="passwordConfirmed"><br>
         <input type="submit" value="Let's play">
 </form>
-{{/if}}
