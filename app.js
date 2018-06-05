@@ -44,8 +44,13 @@ const newUserSchema = mongoose.Schema({
 const newUser = mongoose.model('newUser', newUserSchema);
 
 app.get('/', (req, res) => { 
+    console.log(req.session.errors);
     res.render('home', { title: 'Form Validation', success: req.session.success, errors: req.session.errors});
 });
+
+app.get('/error', (req, res) => {
+    res.send('there was an error');
+})
 
 app.post('/createuser', (req, res) => {
     req.check('password', 'Password is invalid').equals(req.body.passwordConfirmed);
@@ -67,11 +72,13 @@ app.post('/createuser', (req, res) => {
 
         user.save(function (err) {
             if (err) {
-                console.log(err);
+                req.session.success = false;
+                req.session.errors = 'Username already taken';
+                res.redirect('/')
             } else {
                 res.redirect('/factions');
             }
-          });
+        });
     } 
 })
 
